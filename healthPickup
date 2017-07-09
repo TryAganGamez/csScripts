@@ -1,0 +1,18 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class healthPickup : MonoBehaviour {
+
+	public int healthAmount;
+	public AudioClip myClip;
+
+	void OnTriggerEnter(Collider other){
+
+		if (other.tag == "Player") {
+			other.GetComponent<playerHealth> ().addHealth (healthAmount);
+			Destroy (transform.root.gameObject);
+			AudioSource.PlayClipAtPoint (myClip, transform.position, 0.15f);
+		}
+	}
+}
