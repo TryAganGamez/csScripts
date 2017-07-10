@@ -1,0 +1,36 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class meleeAttack : MonoBehaviour {
+
+	public float damage;
+	public float knockBack;
+	public float meleeRate;
+	float nextMelee;
+	int shootableMask;
+	Animator myAnim;
+	playerMove myPlayer;
+	public float knockBackRadius;
+
+	// Use this for initialization
+	void Start () {
+		shootableMask = LayerMask.GetMask ("Shootable");
+		myAnim = transform.root.GetComponent<Animator> ();
+		myPlayer = transform.root.GetComponent<playerMove> ();
+		nextMelee = 0f;
+
+		
+	}
+	
+	// Update is called once per frame
+	void FixedUpdate () {
+		float melee = Input.GetAxis ("Fire2");
+		if (melee > 0 && nextMelee < Time.time && !(myPlayer.getRunning ())) {
+			myAnim.SetTrigger ("meleeAttack");
+			nextMelee = Time.time + meleeRate;
+			Collider[] attacked = Physics.OverlapSphere (transform.position, knockBackRadius, shootableMask);
+
+		}
+	}
+}
