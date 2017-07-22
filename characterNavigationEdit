@@ -1,0 +1,29 @@
+using UnityEngine;
+using UnityEditor;
+
+[CustomEditor(typeof(CharacterNavigation))]
+public class CharacterNavigationEditor : Editor
+{
+    static bool visualizePath = false;
+
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        visualizePath = EditorGUILayout.Toggle("Visualize Path", visualizePath);
+    }
+
+    [DrawGizmo(GizmoType.Selected | GizmoType.NonSelected)]
+    static void DrawLinesForNavAgent(NavMeshAgent agent, GizmoType gizmoType)
+    {
+        if (!visualizePath || agent.path == null)
+            return;
+
+        Gizmos.color = Color.red;
+        Vector3[] points = agent.path.corners;
+        for (int i = 0; i < points.Length - 1; i++)
+        {
+            Gizmos.DrawLine(points[i], points[i + 1]);
+        }
+    }   
+}
