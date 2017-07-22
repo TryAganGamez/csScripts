@@ -1,0 +1,19 @@
+using UnityEngine;
+
+public class CharacterNavigation : MonoBehaviour
+{
+    public Transform target;
+
+    NavMeshAgent agent;
+
+    void Awake()
+    {
+        agent = GetComponent<NavMeshAgent>();
+    }
+
+    void Update ()
+    {
+        agent.SetDestination(target.position);
+        agent.Stop();
+    }
+}
