@@ -1,0 +1,41 @@
+using UnityEngine;
+
+public class ParticleCoinScript : MonoBehaviour
+{
+    public ParticleSystem coinSystem;
+    public Transform playerPosition;
+    public float floorHeight = 0f;
+
+    int maxParticles;
+    ParticleSystem.Particle[] coins;
+
+    void Start()
+    {
+        maxParticles = coinSystem.maxParticles;
+        coins = new ParticleSystem.Particle[maxParticles];
+    }
+
+    void Update()
+    {
+        coinSystem.GetParticles(coins);
+
+        for (int i = 0; i < coins.Length; i++)
+        {
+            //Bounce
+            if (coins[i].position.y < floorHeight)
+            {
+                if (coins[i].velocity.y < 0)
+                    coins[i].velocity = new Vector3(coins[i].velocity.x, 5, coins[i].velocity.z);
+                else
+                    coins[i].position = new Vector3(coins[i].position.x, floorHeight, coins[i].position.z);
+            }
+
+            //Collect by player
+            float distance = Vector3.Distance(coins[i].position, playerPosition.position);
+            if (Mathf.Abs(distance) <= 1.5f)
+                coins[i].lifetime = 0f;
+        }
+
+        coinSystem.SetParticles(coins, maxParticles);
+    }
+}
