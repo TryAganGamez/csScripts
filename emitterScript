@@ -1,0 +1,43 @@
+using UnityEngine;
+using System.Collections;
+
+public class EmitterScript : MonoBehaviour
+{
+    public float rate = 20f;
+    public int maxCoins = 100;
+    public GameObject coin;
+
+    Rigidbody2D[] coins;
+    int index;
+    float amntPerUpdate;
+    
+    void Start ()
+    {
+        coins = new Rigidbody2D[maxCoins];
+        for (int i = 0; i < maxCoins; i++)
+        {
+            coins[i] = (Instantiate(coin) as GameObject).GetComponent<Rigidbody2D>();
+            coins[i].gameObject.SetActive(false);
+        }
+
+        amntPerUpdate = rate * .02f;
+        index = 0;
+    }
+
+    void FixedUpdate()
+    {
+        for (int i = 0; i < amntPerUpdate; i++)
+        {
+            coins[index].gameObject.SetActive(false);
+            coins[index].transform.position = transform.position;
+            coins[index].transform.rotation = Quaternion.identity;
+            coins[index].gameObject.SetActive(true);
+
+            Vector3 velocity = new Vector3(Random.Range(-2f, 2f), 10f, 0f);
+            coins[index].velocity = velocity;
+
+            if (++index >= maxCoins)
+                index = 0;
+        }
+    }
+}
