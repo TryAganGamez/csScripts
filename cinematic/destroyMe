@@ -1,0 +1,15 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class destroyMe : MonoBehaviour {
+
+	[SerializeField] float aliveTime;
+
+	// Use this for initialization
+	void Awake () {
+		Destroy (transform.root.transform.gameObject, aliveTime);
+		
+	}
+
+}
