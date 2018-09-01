@@ -1,0 +1,11 @@
+//Add this script to the main camera
+//Add the plane as a child of the camera
+
+public GameObject webCameraPlane;
+
+void Start(){
+WebCamTexture webCameraTexture = new WebCamTexture();
+webCameraPlane.GetComponant<MeshRenderer>().material.mainTexture= webCamTexture;
+webCameraTexture.Play();
+
+}
