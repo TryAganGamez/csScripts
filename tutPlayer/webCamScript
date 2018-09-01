@@ -1,11 +1,56 @@
+using UnityEngine;
+using System.Collections;
+using UnityEngine.UI;
+
 //Add this script to the main camera
 //Add the plane as a child of the camera
 
+public class webCamScript : MonoBehaviour {
+
+//turn meshcollider off plane
+//Add flare as explosion and an after burner on enemy
+
+public Button fireButton;
 public GameObject webCameraPlane;
 
 void Start(){
+if(Application.isMobilePlatform){
+GameObject cameraParent = new GameObject("camParent");
+this.transform.parent = cameraParent.transform;
+cameraParent.transform.Rotate(Vector3.right,90);
+
+}
+
+Input.gyro.enabled = true;
+
+fireButton.onClick.AddListener(OnButtonDown);
+
 WebCamTexture webCameraTexture = new WebCamTexture();
 webCameraPlane.GetComponant<MeshRenderer>().material.mainTexture= webCamTexture;
 webCameraTexture.Play();
 
+}
+
+void OnButtonDown(){
+
+GameObject bullet = Instantiate(Resources.Load("bullet", typeof(GameObject))) as GameObject;
+Rigidbody rb = bullet.GetComponant<Rigidbody>();
+bullet.transform.rotation = Camera.main.transform.rotation;
+bullet.transform.position = Camera.main.transform.position;
+rb.AddForce(Camera.main.transform.forward = 500f);
+Destroy(bullet, 3);
+//create bullet with sphere and add ridgidbody uncheck gravity and isTrigger
+
+GetComponant<AudioSource>().Play(); //Add to camera
+
+}
+
+}
+
+void Update(){
+
+Quaternion cameraRotation = new Quaternion(Input.gyro.attitude.x, Input.gyro.attitude.y, -Input.gyro.attitude.z,
+-Input.gyro.attitude.w);
+
+}
 }
